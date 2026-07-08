@@ -6,7 +6,7 @@ import logging
 import re
 import time
 
-import bleach
+import 
 
 import config
 
