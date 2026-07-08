@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.9.2
+    container_name: shopbot-qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  evolution:
+    image: atendai/evolution-api:v2.1.1
+    container_name: shopbot-evolution
+    ports:
+      - "8080:8080"
+    volumes:
+      - evolution_data:/evolution/instances
+    environment:
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY}
+      WEBHOOK_GLOBAL_URL: ${WEBHOOK_URL}
+      WEBHOOK_GLOBAL_ENABLED: "true"
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: "true"
+      DATABASE_ENABLED: "false"
+      LOG_LEVEL: "ERROR"
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:
+  evolution_data:
